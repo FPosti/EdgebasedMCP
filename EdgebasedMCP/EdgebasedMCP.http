@@ -1,0 +1,78 @@
+@baseUrl = http://localhost:5050
+
+### Direct edge telemetry endpoint
+GET {{baseUrl}}/telemetry
+
+### MCP initialize
+POST {{baseUrl}}/mcp
+Accept: application/json, text/event-stream
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-11-25",
+    "capabilities": {},
+    "clientInfo": {
+      "name": "test-ai-agent",
+      "version": "1.0.0"
+    }
+  }
+}
+
+### MCP list tools
+POST {{baseUrl}}/mcp
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/list"
+}
+
+### MCP call telemetry tool
+POST {{baseUrl}}/mcp
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "get_temperature_telemetry",
+    "arguments": {}
+  }
+}
+
+### MCP list resources
+POST {{baseUrl}}/mcp
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "method": "resources/list"
+}
+
+### MCP read telemetry resource
+POST {{baseUrl}}/mcp
+Accept: application/json, text/event-stream
+Content-Type: application/json
+MCP-Protocol-Version: 2025-11-25
+
+{
+  "jsonrpc": "2.0",
+  "id": 5,
+  "method": "resources/read",
+  "params": {
+    "uri": "edge://telemetry/latest"
+  }
+}
