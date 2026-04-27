@@ -3,7 +3,6 @@ using AiAgentSimulator.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -14,11 +13,11 @@ builder.Configuration.AddJsonFile(
 
 builder.Services.Configure<AiAgentOptions>(
     builder.Configuration.GetSection(AiAgentOptions.SectionName));
-builder.Services.Configure<FileLoggingOptions>(
-    builder.Configuration.GetSection(FileLoggingOptions.SectionName));
+builder.Services.Configure<LatencyCsvOptions>(
+    builder.Configuration.GetSection(LatencyCsvOptions.SectionName));
 
 builder.Services.AddSingleton<IMcpClient, McpClient>();
-builder.Services.AddSingleton<ILoggerProvider, SimpleFileLoggerProvider>();
+builder.Services.AddSingleton<ILatencyRecorder, LatencyCsvRecorder>();
 builder.Services.AddHostedService<AiAgentTelemetryWorker>();
 
 using var host = builder.Build();

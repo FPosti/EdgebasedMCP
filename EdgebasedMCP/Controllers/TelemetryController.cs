@@ -18,6 +18,6 @@ public sealed class TelemetryController : ControllerBase
     [HttpGet]
     public ActionResult<LatencySample> GetLatest()
     {
-        return Ok(_device.GetLatestTelemetry());
+        return Ok(_device.CreateSample());
     }
 }

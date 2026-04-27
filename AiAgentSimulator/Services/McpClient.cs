@@ -28,8 +28,7 @@ public sealed class McpClient : IMcpClient, IDisposable
             Method = "tools/call",
             Params = new ToolCallParameters
             {
-                Name = _options.TelemetryToolName,
-                Arguments = new ToolCallArguments()
+                Name = _options.TelemetryToolName
             }
         };
 

@@ -11,16 +11,13 @@ public sealed class McpMessageHandler : IMcpMessageHandler
 
     private readonly IEdgeDevice _device;
     private readonly McpServerOptions _options;
-    private readonly ILogger<McpMessageHandler> _logger;
 
     public McpMessageHandler(
         IEdgeDevice device,
-        IOptions<McpServerOptions> options,
-        ILogger<McpMessageHandler> logger)
+        IOptions<McpServerOptions> options)
     {
         _device = device;
         _options = options.Value;
-        _logger = logger;
     }
 
     public McpRequestResult Handle(JsonElement request)
@@ -72,8 +69,7 @@ public sealed class McpMessageHandler : IMcpMessageHandler
             return CreateError(id, -32602, $"tools/call expects params.name to be {_options.ToolName}.");
         }
 
-        var telemetry = _device.GetLatestTelemetry();
-        WriteMcpServedLine("tool", telemetry);
+        var telemetry = _device.CreateSample();
 
         return CreateResult(id, new McpToolCallResult
         {
@@ -111,15 +107,4 @@ public sealed class McpMessageHandler : IMcpMessageHandler
             Response = response
         };
     }
-
-    private void WriteMcpServedLine(string source, LatencySample telemetry)
-    {
-        _logger.LogInformation(
-            "[MCP -> AI] served {Source} seq={Sequence} sentAtUtc={SentAtUtc:O} sentAtUnixMs={SentAtUnixMilliseconds}",
-            source,
-            telemetry.Sequence,
-            telemetry.SentAtUtc,
-            telemetry.SentAtUnixMilliseconds);
-    }
-
 }

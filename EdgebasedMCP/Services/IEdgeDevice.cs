@@ -4,7 +4,5 @@ namespace EdgebasedMCP.Services;
 
 public interface IEdgeDevice
 {
-    LatencySample GetLatestTelemetry();
-
-    LatencySample PublishNextTelemetry();
+    LatencySample CreateSample();
 }
